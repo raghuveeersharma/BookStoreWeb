@@ -1,21 +1,48 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function Login() {
+  const Navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async(data) => {
+    const userInfo = {
+      email: data.email,
+      password: data.password,
+    }
+    await axios.post("http://localhost:3000/user/login", userInfo)
+      .then((res) => {
+        document.getElementById("my_modal_3").close()
+        localStorage.setItem("user",JSON.stringify(res.data.user))
+        console.log(res.data)
+        toast.success(`login success ${res.data.user.username}`);
+        Navigate("/")
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      })
+      .catch((err) => {
+        if(err){
+          toast.error("error : "+err.response.data.error);
+          setTimeout(() => {
+            {}
+          }, 1000);
+          console.log(err)
+        }
+      })
+  };
 
   return (
     <>
       <div>
       <dialog id="my_modal_3" className="modal">
-        <div className="modal-box">
+        <div className="modal-box dark:bg-slate-800 dark:text-white">
           <form onSubmit={handleSubmit(onSubmit)} method="dialog">
             {/* if there is a button in form, it will close the modal */}
             <Link
@@ -29,14 +56,14 @@ function Login() {
               <h3 className="font-bold text-lg text-black">Login</h3>
               <div className="space-y-8">
                 {/* email */}
-                <div className="space-y-2 mt-4">
+                <div className="space-y-2 mt-4 dark:bg-slate-800 dark:text-white">
                   <span className="text-black">Email</span>
                   <br />
                   <input
                     type="email"
                     placeholder="Enter your email"
                     {...register("email", { required: true })}
-                    className="outline-none  w-80 rounded px-3"
+                    className="outline-none  w-80 rounded px-3 dark:bg-slate-800 dark:text-white"
                   />
                   <br />
                    {errors.email && <span className="text-red-500 text-sm">This field is required</span>}
@@ -49,7 +76,7 @@ function Login() {
                     type="password"
                     placeholder="Enter your Password"
                     {...register("password", { required: true })}
-                    className="outline-none w-80 rounded px-3"
+                    className="outline-none w-80 rounded px-3 dark:bg-slate-800 dark:text-white"
                   />
                   <br />
                    {errors.password &&  <span className="text-red-500 text-sm">This field is required</span>}

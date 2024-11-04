@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Login from "./Login";
+import { useAuth } from "../context/AuthProvider";
+import Logout from "./Logout";
 
 function Navbar() {
-
+  const [authUser, setAuthUser] = useAuth();
 
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
@@ -22,35 +24,30 @@ function Navbar() {
     }
   }, [theme]);
 
-
-
   const [sticky, setSticky] = React.useState(false);
   useEffect(() => {
     const handleScroll = () => {
-      if(window.scrollY > 0) {
+      if (window.scrollY > 0) {
         setSticky(true);
       } else {
         setSticky(false);
       }
-    }
-    window.addEventListener('scroll', handleScroll);
+    };
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-    }
-  })
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
   const navItems = (
     <>
       <li>
-       <Link to="/">Home</Link>
+        <Link to="/">Home</Link>
       </li>
       <li>
         <Link to="/Course"> Course</Link>
       </li>
       <li>
         <Link to="/Contact">Contact</Link>
-      </li>
-      <li>
-        <a>About</a>
       </li>
     </>
   );
@@ -146,12 +143,22 @@ function Navbar() {
                 </svg>
               </label>
             </div>
-            <div className="">
-              <a className="bg-black text-white px-3 py-2 rounded-md hover:bg-slate-800 duration-300 cursor-pointer" onClick={()=>document.getElementById("my_modal_3").showModal()}>
-                Login
-              </a>
-              <Login/>
-            </div>
+
+            {authUser ? (
+              <Logout />
+            ) : (
+              <div className="">
+                <a
+                  className="bg-black text-white px-3 py-2 rounded-md hover:bg-slate-800 duration-300 cursor-pointer"
+                  onClick={() =>
+                    document.getElementById("my_modal_3").showModal()
+                  }
+                >
+                  Login
+                </a>
+                <Login />
+              </div>
+            )}
           </div>
         </div>
       </div>
