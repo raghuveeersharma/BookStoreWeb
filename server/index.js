@@ -10,24 +10,25 @@ import userRoute from "./routes/user.route.js";
 
 const app= express();
 // Env variables
-dotenv.config();
+dotenv.config()
 const PORT = process.env.PORT || 3001
 const MongoDBURI = process.env.MongoDBURI
+const mongoDBURLATLAS = process.env.mongoDBURLATLAS
 
 
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:5173' // Allow requests from this origin
+}));
 
 
 
 
 // connect to mongoDB
 try{
-    mongoose.connect(MongoDBURI,{
-        useNewUrlParser:true,
-        useUnifiedTopology:true
+    mongoose.connect(mongoDBURLATLAS||MongoDBURI,{
     });
     console.log("connected to mongodb");
 }
