@@ -6,26 +6,25 @@ import axios from "axios";
 import { useState } from "react";
 
 function Course() {
-
   const [book, setBook] = useState([]);
 
-useEffect(() => {
-  const getBooks = async () => {
-    try {
-      const res = await axios.get("http://localhost:3000/book");
-      setBook(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  useEffect(() => {
+    const getBooks = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/book");
+        setBook(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  getBooks();
-}, []);
+    getBooks();
+  }, []);
 
   return (
     <div>
-      <div className="max-w-screen-2xl container mx-auto md:px-20 px-4 ">
-        <div className="text-center justify-center items-center mt-32 ">
+      <div className="max-w-screen-2xl container mx-auto md:px-20 px-4 pt-24">
+        <div className="text-center justify-center items-center  ">
           <h1 className="text-2xl md:text-4xl ">
             we're delight to have you{" "}
             <span className="text-pink-500">here:)</span>
@@ -58,4 +57,3 @@ useEffect(() => {
 }
 
 export default Course;
-
