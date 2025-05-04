@@ -7,11 +7,12 @@ import Card from "./Card";
 import axios from "axios";
 
 function Freebook() {
+  const link = import.meta.env.VITE_API_BASE_URL;
   const [book, setBook] = useState([]);
   useEffect(() => {
     const getBooks = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/book");
+        const res = await axios.get(`${link}/book`);
         const data = res.data.filter((book) => book.category === "free");
         setBook(data);
         console.log(data);

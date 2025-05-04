@@ -7,11 +7,12 @@ import { useState } from "react";
 
 function Course() {
   const [book, setBook] = useState([]);
+  const link = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const getBooks = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/book");
+        const res = await axios.get(`${link}/book`);
         setBook(res.data);
       } catch (error) {
         console.log(error);

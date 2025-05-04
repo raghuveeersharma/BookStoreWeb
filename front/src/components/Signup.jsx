@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import Navbar from "./Navbar";
 
 function Signup() {
+  const link = import.meta.env.VITE_API_BASE_URL;
   const Navigate = useNavigate();
   const {
     register,
@@ -14,36 +15,37 @@ function Signup() {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
-    const userInfo ={
-      username:data.Name,
-      email:data.email,
-      password:data.password
-    }
-    await axios.post("http://localhost:3000/user/signup",userInfo)
-    .then((res)=>{
-      if(res.data){
-        toast.success(`signup success welcome : ${res.data.user.username}`)
-        document.getElementById("my_modal_3").close()
-        Navigate("/")
-        localStorage.setItem("user",JSON.stringify(res.data.user))
-        setTimeout(() => {
-          window.location.reload();
-        },2000)
-        console.log(res.data)
-      }
-      console.log(res.data)
-    }).catch((err)=>{
-      if(err){
-        toast.error("error : "+err.response.data.message);
-        console.log(err)
-      }
-    })
+    const userInfo = {
+      username: data.Name,
+      email: data.email,
+      password: data.password,
+    };
+    await axios
+      .post(`${link}/user/signup`, userInfo)
+      .then((res) => {
+        if (res.data) {
+          toast.success(`signup success welcome : ${res.data.user.username}`);
+          document.getElementById("my_modal_3").close();
+          Navigate("/");
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+          console.log(res.data);
+        }
+        console.log(res.data);
+      })
+      .catch((err) => {
+        if (err) {
+          toast.error("error : " + err.response.data.message);
+          console.log(err);
+        }
+      });
   };
-  
- 
+
   return (
-    <> 
-    <Navbar/>
+    <>
+      <Navbar />
       <div className="flex items-center justify-center h-screen dark:bg-slate-800 dark:text-white">
         <div className="dark:bg-slate-800 dark:text-white modal-box border shadow-xl  rounded-lg hover:shadow-2xl hover:shadow-red-400  hover:scale-105 duration-8000 ">
           <div className="">
@@ -68,8 +70,12 @@ function Signup() {
                     {...register("Name", { required: true })}
                     className="outline-none w-80 rounded px-3 dark:bg-slate-800 dark:text-white"
                   />
-                   <br />
-                   {errors.email && <span className="text-red-500 text-sm">This field is required</span>}
+                  <br />
+                  {errors.email && (
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
+                  )}
                 </div>
                 {/* email */}
                 <div className="space-y-2 mt-4">
@@ -81,8 +87,12 @@ function Signup() {
                     {...register("email", { required: true })}
                     className="outline-none  w-80 rounded px-3 dark:bg-slate-800 dark:text-white"
                   />
-                   <br />
-                   {errors.email && <span className="text-red-500 text-sm">This field is required</span>}
+                  <br />
+                  {errors.email && (
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
+                  )}
                 </div>
                 {/* password */}
                 <div className="space-y-2 mt-4 ">
@@ -94,12 +104,19 @@ function Signup() {
                     {...register("password", { required: true })}
                     className="outline-none w-80 rounded px-3 dark:bg-slate-800 dark:text-white"
                   />
-                   <br />
-                   {errors.email && <span className="text-red-500 text-sm">This field is required</span>}
+                  <br />
+                  {errors.email && (
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
+                  )}
                 </div>
                 {/* button */}
                 <div className="flex justify-around mt-4">
-                  <button className="bg-pink-500 text-white px-4 py-2 rounded  hover:bg-pink-700 duration-300 mt-8 mx-14" onClick={handleSubmit(onSubmit)}>
+                  <button
+                    className="bg-pink-500 text-white px-4 py-2 rounded  hover:bg-pink-700 duration-300 mt-8 mx-14"
+                    onClick={handleSubmit(onSubmit)}
+                  >
                     Signup
                   </button>
                   <div className="mt-9 text-black text-sm">
