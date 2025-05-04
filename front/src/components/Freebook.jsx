@@ -6,14 +6,13 @@ import { useState } from "react";
 import Card from "./Card";
 import axios from "axios";
 
-
 function Freebook() {
   const [book, setBook] = useState([]);
   useEffect(() => {
     const getBooks = async () => {
       try {
         const res = await axios.get("http://localhost:3000/book");
-        const data=res.data.filter((book) => book.category === "free")
+        const data = res.data.filter((book) => book.category === "free");
         setBook(data);
         console.log(data);
       } catch (error) {
@@ -21,7 +20,7 @@ function Freebook() {
       }
     };
     getBooks();
-  },[])
+  }, []);
   var settings = {
     dots: true,
     infinite: false,
@@ -72,7 +71,7 @@ function Freebook() {
         <div>
           <Slider {...settings}>
             {book.map((item) => (
-              <Card item={item} key={item.id} />
+              <Card item={item} key={item._id} />
             ))}
           </Slider>
         </div>
